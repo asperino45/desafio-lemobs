@@ -1,0 +1,63 @@
+swagger: '2.0'
+info:
+  description: 'Avaliação Prática Lemobs'
+  version: '1.0.0'
+  title: Desafio API Lemobs
+
+basePath: /v1/
+
+consumes:
+  - application/json
+produces:
+  - application/json
+
+schemes:
+  - http
+
+paths:
+
+  # ---
+  # Serviço responsável por cadastrar um novo aluno.
+  # ---  
+  /aluno:
+    x-swagger-router-controller: aluno
+    post:
+      tags:
+        - Aluno
+      operationId: cadastrar_aluno
+      parameters:
+        - in: body
+          name: body
+          description: Modelo de Aluno
+          required: true
+          schema:
+            $ref: "#/definitions/aluno"        
+      responses:
+        '201':
+          description: Criado (Created)
+        '400':
+          description: Requisição Inválida (Bad Request)
+        '500':
+          description: Erro Interno do Servidor (Internal Server Error)    
+
+  /docs:
+    x-swagger-pipe: swagger_raw
+    
+definitions:
+  aluno:
+    type: object
+    properties:
+      nome:
+        type: string
+      data_nascimento:
+        type: string
+        format: date
+      cpf:
+        type: string
+      nota:
+        type: number
+    required:
+      - nome
+      - data_nascimento
+      - cpf
+      - nota
