@@ -17,7 +17,7 @@ schemes:
 paths:
 
   # ---
-  # Serviço responsável por cadastrar um novo aluno.
+  # Serviço responsável por cadastrar um novo aluno ou listar todos os alunos.
   # ---  
   /aluno:
     x-swagger-router-controller: aluno
@@ -39,6 +39,173 @@ paths:
           description: Requisição Inválida (Bad Request)
         '500':
           description: Erro Interno do Servidor (Internal Server Error)    
+    get:
+      tags:
+        - Aluno
+      operationId: listar_alunos
+      responses:
+        '200':
+          description: Sucesso (OK)
+        '400':
+          description: Requisição Inválida (Bad Request)
+        '500':
+          description: Erro Interno do Servidor (Internal Server Error)    
+
+  # ---
+  # Serviço responsável por atualizar um novo aluno ou listar um aluno.
+  # ---  
+  /aluno/{aluno_id}:
+    x-swagger-router-controller: aluno
+    put:
+      tags:
+        - Aluno
+      operationId: atualizar_aluno
+      parameters:
+        - in: path
+          name: aluno_id
+          description: Índice de Aluno
+          required: true
+          type: integer
+        - in: body
+          name: body
+          description: Modelo de Aluno
+          required: true
+          schema:
+            $ref: "#/definitions/aluno"
+      responses:
+        '201':
+          description: Criado (Created)
+        '400':
+          description: Requisição Inválida (Bad Request)
+        '500':
+          description: Erro Interno do Servidor (Internal Server Error)    
+    get:
+      tags:
+        - Aluno
+      operationId: listar_aluno
+      parameters:
+        - in: path
+          name: aluno_id
+          description: Índice de Aluno
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Sucesso (OK)
+        '400':
+          description: Requisição Inválida (Bad Request)
+        '500':
+          description: Erro Interno do Servidor (Internal Server Error)    
+
+
+  # ---
+  # Serviço responsável por listar endereços um aluno.
+  # ---  
+  /aluno/{aluno_id}/endereco:
+    x-swagger-router-controller: aluno
+    get:
+      tags:
+        - Aluno
+        - Endereço
+      operationId: listar_enderecos_aluno
+      parameters:
+        - in: path
+          name: aluno_id
+          description: Índice de Aluno
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Sucesso (OK)
+        '400':
+          description: Requisição Inválida (Bad Request)
+        '500':
+          description: Erro Interno do Servidor (Internal Server Error)    
+
+  # ---
+  # Serviço responsável por filtrar todas as notas dos alunos.
+  # ---  
+  /aluno/{nota}/criterio/{criterio}:
+    x-swagger-router-controller: aluno
+    get:
+      tags:
+        - Aluno
+        - Nota
+      operationId: listar_notas_aluno
+      parameters:
+        - in: path
+          name: nota
+          description: Nota de Aluno
+          required: true
+          type: number
+        - in: path
+          name: criterio
+          description: Filtro de notas dos alunos
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Sucesso (OK)
+        '400':
+          description: Requisição Inválida (Bad Request)
+        '500':
+          description: Erro Interno do Servidor (Internal Server Error)    
+
+  # ---
+  # Serviço responsável por filtrar todas as notas dos alunos com base na media geral.
+  # ---  
+  /aluno/media:
+    x-swagger-router-controller: aluno
+    get:
+      tags:
+        - Aluno
+        - Nota
+      operationId: listar_alunos_acima_media
+      responses:
+        '200':
+          description: Sucesso (OK)
+        '400':
+          description: Requisição Inválida (Bad Request)
+        '500':
+          description: Erro Interno do Servidor (Internal Server Error)    
+
+
+  # ---
+  # Serviço responsável por cadastrar um novo endereco.
+  # ---  
+  /endereco:
+    x-swagger-router-controller: endereco
+    post:
+      tags:
+        - Endereço
+      operationId: cadastrar_endereco
+      parameters:
+        - in: body
+          name: body
+          description: Modelo de Endereço
+          required: true
+          schema:
+            $ref: "#/definitions/endereco"        
+      responses:
+        '201':
+          description: Criado (Created)
+        '400':
+          description: Requisição Inválida (Bad Request)
+        '500':
+          description: Erro Interno do Servidor (Internal Server Error)    
+    get:
+      tags:
+        - Endereço
+      operationId: listar_enderecos
+      responses:
+        '200':
+          description: Sucesso (OK)
+        '400':
+          description: Requisição Inválida (Bad Request)
+        '500':
+          description: Erro Interno do Servidor (Internal Server Error)    
+
+
 
   /docs:
     x-swagger-pipe: swagger_raw
@@ -61,3 +228,18 @@ definitions:
       - data_nascimento
       - cpf
       - nota
+      
+  endereco:
+    type: object
+    properties:
+      rua:
+        type: string
+      numero:
+        type: string
+      complemento:
+        type: string
+      bairro:
+        type: string
+    required:
+      - rua
+      - bairro
