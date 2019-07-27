@@ -13,6 +13,8 @@
     "express": "^4.16.4",
     "node-fetch": "^2.3.0",
     "pg": "^6.0.2",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^5.10.3",
     "swagger-express-mw": "^0.7.0"
   },
   "devDependencies": {
