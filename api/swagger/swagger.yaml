@@ -31,14 +31,20 @@ paths:
           description: Modelo de Aluno
           required: true
           schema:
-            $ref: "#/definitions/aluno"        
+            $ref: "#/definitions/Aluno"        
       responses:
         '201':
           description: Criado (Created)
+          schema:
+            $ref: "#/definitions/GeneralResponse"
         '400':
           description: Requisição Inválida (Bad Request)
+          schema:
+            $ref: "#/definitions/ErrorResponse"
         '500':
-          description: Erro Interno do Servidor (Internal Server Error)    
+          description: Erro Interno do Servidor (Internal Server Error)  
+          schema:
+            $ref: "#/definitions/ErrorResponse"
     get:
       tags:
         - Aluno
@@ -46,10 +52,16 @@ paths:
       responses:
         '200':
           description: Sucesso (OK)
+          schema:
+            $ref: "#/definitions/AlunosResponse"
         '400':
           description: Requisição Inválida (Bad Request)
+          schema:
+            $ref: "#/definitions/ErrorResponse"
         '500':
-          description: Erro Interno do Servidor (Internal Server Error)    
+          description: Erro Interno do Servidor (Internal Server Error)  
+          schema:
+            $ref: "#/definitions/ErrorResponse"
 
   # ---
   # Serviço responsável por atualizar um novo aluno ou listar um aluno.
@@ -71,14 +83,20 @@ paths:
           description: Modelo de Aluno
           required: true
           schema:
-            $ref: "#/definitions/aluno"
+            $ref: "#/definitions/Aluno"
       responses:
         '201':
-          description: Criado (Created)
+          description: Criado ou modificado (Created)
+          schema:
+            $ref: "#/definitions/GeneralResponse"
         '400':
           description: Requisição Inválida (Bad Request)
+          schema:
+            $ref: "#/definitions/ErrorResponse"
         '500':
-          description: Erro Interno do Servidor (Internal Server Error)    
+          description: Erro Interno do Servidor (Internal Server Error)  
+          schema:
+            $ref: "#/definitions/ErrorResponse"
     get:
       tags:
         - Aluno
@@ -92,10 +110,16 @@ paths:
       responses:
         '200':
           description: Sucesso (OK)
+          schema:
+            $ref: "#/definitions/AlunoResponse"
         '400':
           description: Requisição Inválida (Bad Request)
+          schema:
+            $ref: "#/definitions/ErrorResponse"
         '500':
-          description: Erro Interno do Servidor (Internal Server Error)    
+          description: Erro Interno do Servidor (Internal Server Error)  
+          schema:
+            $ref: "#/definitions/ErrorResponse"
 
 
   # ---
@@ -117,10 +141,16 @@ paths:
       responses:
         '200':
           description: Sucesso (OK)
+          schema:
+            $ref: "#/definitions/EnderecoResponse"
         '400':
           description: Requisição Inválida (Bad Request)
+          schema:
+            $ref: "#/definitions/ErrorResponse"
         '500':
-          description: Erro Interno do Servidor (Internal Server Error)    
+          description: Erro Interno do Servidor (Internal Server Error)  
+          schema:
+            $ref: "#/definitions/ErrorResponse"
 
   # ---
   # Serviço responsável por filtrar todas as notas dos alunos.
@@ -131,7 +161,7 @@ paths:
       tags:
         - Aluno
         - Nota
-      operationId: listar_notas_aluno
+      operationId: listar_notas_alunos
       parameters:
         - in: path
           name: nota
@@ -146,10 +176,16 @@ paths:
       responses:
         '200':
           description: Sucesso (OK)
+          schema:
+            $ref: "#/definitions/AlunosResponse"
         '400':
           description: Requisição Inválida (Bad Request)
+          schema:
+            $ref: "#/definitions/ErrorResponse"
         '500':
-          description: Erro Interno do Servidor (Internal Server Error)    
+          description: Erro Interno do Servidor (Internal Server Error)  
+          schema:
+            $ref: "#/definitions/ErrorResponse"
 
   # ---
   # Serviço responsável por filtrar todas as notas dos alunos com base na media geral.
@@ -164,10 +200,16 @@ paths:
       responses:
         '200':
           description: Sucesso (OK)
+          schema:
+            $ref: "#/definitions/AlunosResponse"
         '400':
           description: Requisição Inválida (Bad Request)
+          schema:
+            $ref: "#/definitions/ErrorResponse"
         '500':
-          description: Erro Interno do Servidor (Internal Server Error)    
+          description: Erro Interno do Servidor (Internal Server Error)  
+          schema:
+            $ref: "#/definitions/ErrorResponse" 
 
 
   # ---
@@ -185,14 +227,18 @@ paths:
           description: Modelo de Endereço
           required: true
           schema:
-            $ref: "#/definitions/endereco"        
+            $ref: "#/definitions/Endereco"        
       responses:
         '201':
           description: Criado (Created)
         '400':
           description: Requisição Inválida (Bad Request)
+          schema:
+            $ref: "#/definitions/ErrorResponse"
         '500':
-          description: Erro Interno do Servidor (Internal Server Error)    
+          description: Erro Interno do Servidor (Internal Server Error)  
+          schema:
+            $ref: "#/definitions/ErrorResponse"
     get:
       tags:
         - Endereço
@@ -200,25 +246,30 @@ paths:
       responses:
         '200':
           description: Sucesso (OK)
+          schema:
+            $ref: "#/definitions/EnderecosResponse"
         '400':
           description: Requisição Inválida (Bad Request)
+          schema:
+            $ref: "#/definitions/ErrorResponse"
         '500':
-          description: Erro Interno do Servidor (Internal Server Error)    
-
+          description: Erro Interno do Servidor (Internal Server Error)  
+          schema:
+            $ref: "#/definitions/ErrorResponse"
 
 
   /docs:
     x-swagger-pipe: swagger_raw
     
 definitions:
-  aluno:
+  Aluno:
     type: object
     properties:
       nome:
         type: string
       data_nascimento:
         type: string
-        format: date
+        #format: date
       cpf:
         type: string
       nota:
@@ -228,8 +279,46 @@ definitions:
       - data_nascimento
       - cpf
       - nota
+
+  AlunoResponse:
+    type: object
+    properties:
+      nome:
+        type: string
+      data_nascimento:
+        type: string
+        #format: date
+      cpf:
+        type: string
+      nota:
+        type: number
+    required:
+      - nome
+      - data_nascimento
+      - cpf
+      - nota
+
+  AlunosResponse:
+    type: array
+    items:
+      type: object
+      properties:
+        nome:
+          type: string
+        data_nascimento:
+          type: string
+          #format: date
+        cpf:
+          type: string
+        nota:
+          type: number
+      required:
+        - nome
+        - data_nascimento
+        - cpf
+        - nota
       
-  endereco:
+  Endereco:
     type: object
     properties:
       rua:
@@ -243,3 +332,54 @@ definitions:
     required:
       - rua
       - bairro
+
+  EnderecoResponse:
+    type: object
+    properties:
+      endereco:
+        type: string
+      bairro:
+        type: string
+    required:
+      - endereco
+      - bairro
+      
+  EnderecosResponse:
+    required:
+      - total
+      - enderecos
+    properties:
+      total:
+        type: integer
+      enderecos:
+        type: array
+        items:
+          type: object
+          properties:
+            endereco:
+              type: string
+            bairro:
+              type: string
+          required:
+            - endereco
+            - bairro
+        
+  GeneralResponse:
+    type: object
+    properties:
+      success:
+        type: integer
+        description: returns 1 if successful
+      description:
+        type: string
+        description: a short comment 
+    required:
+      - success
+      - description
+      
+  ErrorResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string

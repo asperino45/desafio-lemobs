@@ -24,10 +24,34 @@ npm install
 npm install nodemon
 ```
 
-**8)** Executar o seguinte comando no terminal para iniciar a aplicação:
+**6)** Instalar as seguintes dependências globais de desenvolvimento:
+
+```
+$ npm install -g sequelize-cli
+$ npm install -g swagger
+```
+
+**7)** Executar os seguintes comandos para iniciar o bando de dados e adquirir os privilégios necessários:
+
+```
+$ cd ~/Projetos/diretorio_projeto
+$ sequelize db:create
+$ psql -U postgres -c 'grant all privileges on database "banco_dados" to usuario;'
+```
+
+**8)** Executar a migração do banco de dados e verificar seu estado:
+
+```
+$ sequelize db:migrate
+$ sequelize db:migrate:status
+$ psql -U usuario -d banco_dados -c '\dt'
+```
+
+**9)** Executar o seguinte comando no terminal para iniciar a aplicação:
 
 ```
 npm start
 ```
+
 
 Acessar a aplicação no endereço e portas definidos no arquivo ".env". Exemplo: http://localhost:8001

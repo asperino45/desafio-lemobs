@@ -1,7 +1,7 @@
 'use strict';
 
 // Imports
-const dotenv = require('dotenv').config({path: '.env'});
+const dotenv = require('dotenv').config({ path: '.env' });
 const SwaggerExpress = require('swagger-express-mw');
 const express = require('express');
 const app = express();
