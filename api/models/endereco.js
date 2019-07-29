@@ -4,11 +4,11 @@ module.exports = (sequelize, DataTypes) => {
     rua: DataTypes.STRING,
     numero: DataTypes.STRING,
     complemento: DataTypes.STRING,
-    bairro: DataTypes.STRING
+    bairro: DataTypes.STRING,
   }, {});
   Endereco.associate = function (models) {
     // associations can be defined here
-    Endereco.belongsTo(models.Aluno)
+    Endereco.belongsTo(models.Aluno, { foreignKey: 'alunoId', as: 'aluno_id' });
   };
   return Endereco;
 };
