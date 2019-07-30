@@ -1,12 +1,13 @@
 const Aluno = require('../models').Aluno;
 const Endereco = require('../models').Endereco;
+const Op = require('sequelize').Op;
 
 async function cadastrarAluno(req, res) {
     return Aluno
         .create({
             nome: req.body.nome,
             data_nascimento: req.body.data_nascimento,
-            cpf: despontuarCPF(req.body.cpf),
+            cpf: req.body.cpf,
             nota: req.body.nota
         })
         .then((aluno) => res.status(201).send(aluno))
@@ -22,7 +23,16 @@ async function listarAlunos(req, res) {
                     message: 'Nenhum aluno encontrado',
                 });
             }
-            return res.status(200).send(alunos);
+            return res.status(200).send(alunos
+                .map((aluno) => {
+                    return {
+                        nome: aluno.nome,
+                        data_nascimento: aluno.data_nascimento,
+                        cpf: aluno.pontuar_cpf,
+                        nota: aluno.nota
+                    }
+                }
+                ));
         })
         .catch((error) => res.status(400).send(error))
 }
@@ -53,7 +63,7 @@ async function atualizarAluno(req, res) {
             return aluno.update({
                 nome: req.body.nome,
                 data_nascimento: req.body.data_nascimento,
-                cpf: despontuarCPF(req.body.cpf),
+                cpf: req.body.cpf,
                 nota: req.body.nota
             })
                 .then(res.status(200).send(aluno))
@@ -70,21 +80,18 @@ async function listarEnderecosAluno(req, res) {
         .then((enderecos) => {
             return res.status(200).send({
                 total: enderecos.count,
-                enderecos: [enderecos.rows]
+                enderecos: enderecos.rows.map((endr) => endr.endereco_formatado)
             })
         })
         .catch((error) => res.status(400).send(error));
 }
 
 async function listarNotasAlunos(req, res) {
+    const op = (req.swagger.params.criterio.value === '>') ? Op.gte : Op.lte;
     return Aluno
         .findAll({
             where: {
-                nota: {
-                    [
-                        (req.swagger.params.criterio.value === ">") ? "Op.gte" : "Op.lte"
-                    ]: req.swagger.params.nota.value
-                }
+                nota: { [op]: req.swagger.params.nota.value }
             }
         })
         .then((alunos) => res.status(200).send(alunos))
@@ -92,16 +99,10 @@ async function listarNotasAlunos(req, res) {
 }
 
 async function listarAlunosAcimaMedia(req, res) {
-    let sum = Aluno.sum('nota');
-    let count = Aluno.count();
-    let mean = sum * 1.0 / count
-    return Aluno.findAll({
-        where: {
-            nota: {
-                [Op.gte]: mean
-            }
-        }
-    })
+    // const sum = Aluno.sum('nota');
+    // const count = Aluno.count();
+    // const mean = sum * 1.0 / count
+    return Aluno.findAll()
         .then((alunos) => res.status(200).send(alunos))
         .catch((error) => res.status(400).send(error));
 };
@@ -115,17 +116,3 @@ module.exports = {
     listar_notas_alunos: listarNotasAlunos,
     listar_alunos_acima_media: listarAlunosAcimaMedia,
 }
-
-async function validarAluno(aluno) {
-    aluno.cpf = pontuarCPF(aluno.cpf);
-    return aluno;
-};
-
-async function pontuarCPF(strCPF) {
-    let regex = /(\d{3})(\d{3})(\d{3})(\d{2})/g;
-    return strCPF.replace(regex, "$1.$2.$3-$4");
-};
-
-async function despontuarCPF(strCPF) {
-    return strCPF.replace(/[\.-]/g, "")
-};
