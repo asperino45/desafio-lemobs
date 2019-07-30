@@ -16,12 +16,10 @@ schemes:
 
 paths:
 
-  # ---
-  # Serviço responsável por cadastrar um novo aluno ou listar todos os alunos.
-  # ---  
   /aluno:
     x-swagger-router-controller: aluno
     post:
+      summary: Cadastrar um novo aluno.
       tags:
         - Aluno
       operationId: cadastrar_aluno
@@ -31,7 +29,7 @@ paths:
           description: Modelo de Aluno
           required: true
           schema:
-            $ref: "#/definitions/Aluno"        
+            $ref: "#/definitions/Aluno"
       responses:
         '201':
           description: Criado (Created)
@@ -42,10 +40,11 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
         '500':
-          description: Erro Interno do Servidor (Internal Server Error)  
+          description: Erro Interno do Servidor (Internal Server Error)
           schema:
             $ref: "#/definitions/ErrorResponse"
     get:
+      summary: Listar todos os alunos.
       tags:
         - Aluno
       operationId: listar_alunos
@@ -59,16 +58,35 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
         '500':
-          description: Erro Interno do Servidor (Internal Server Error)  
+          description: Erro Interno do Servidor (Internal Server Error)
           schema:
             $ref: "#/definitions/ErrorResponse"
 
-  # ---
-  # Serviço responsável por atualizar um novo aluno ou listar um aluno.
-  # ---  
+  /aluno/media:
+    x-swagger-router-controller: aluno
+    get:
+      summary: Filtrar todas as notas dos alunos com base na media geral.
+      tags:
+        - Nota
+      operationId: listar_alunos_acima_media
+      responses:
+        '200':
+          description: Sucesso (OK)
+          schema:
+            $ref: "#/definitions/AlunosResponse"
+        '400':
+          description: Requisição Inválida (Bad Request)
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        '500':
+          description: Erro Interno do Servidor (Internal Server Error)
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
   /aluno/{aluno_id}:
     x-swagger-router-controller: aluno
     put:
+      summary: Atualizar/criar um aluno.
       tags:
         - Aluno
       operationId: atualizar_aluno
@@ -83,7 +101,7 @@ paths:
           description: Modelo de Aluno
           required: true
           schema:
-            $ref: "#/definitions/Aluno"
+            $ref: "#/definitions/AlunoPut"
       responses:
         '201':
           description: Criado ou modificado (Created)
@@ -94,10 +112,11 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
         '500':
-          description: Erro Interno do Servidor (Internal Server Error)  
+          description: Erro Interno do Servidor (Internal Server Error)
           schema:
             $ref: "#/definitions/ErrorResponse"
     get:
+      summary: Listar um aluno.
       tags:
         - Aluno
       operationId: listar_aluno
@@ -117,19 +136,15 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
         '500':
-          description: Erro Interno do Servidor (Internal Server Error)  
+          description: Erro Interno do Servidor (Internal Server Error)
           schema:
             $ref: "#/definitions/ErrorResponse"
 
-
-  # ---
-  # Serviço responsável por listar endereços um aluno.
-  # ---  
   /aluno/{aluno_id}/endereco:
     x-swagger-router-controller: aluno
     get:
+      summary: Listar endereços de um aluno.
       tags:
-        - Aluno
         - Endereço
       operationId: listar_enderecos_aluno
       parameters:
@@ -148,18 +163,15 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
         '500':
-          description: Erro Interno do Servidor (Internal Server Error)  
+          description: Erro Interno do Servidor (Internal Server Error)
           schema:
             $ref: "#/definitions/ErrorResponse"
 
-  # ---
-  # Serviço responsável por filtrar todas as notas dos alunos.
-  # ---  
   /aluno/{nota}/criterio/{criterio}:
     x-swagger-router-controller: aluno
     get:
+      summary: Filtrar (< ou >) todas as notas dos alunos.
       tags:
-        - Aluno
         - Nota
       operationId: listar_notas_alunos
       parameters:
@@ -170,7 +182,7 @@ paths:
           type: number
         - in: path
           name: criterio
-          description: Filtro de notas dos alunos
+          description: Filtro de notas dos alunos (< ou >)
           required: true
           type: string
       responses:
@@ -183,41 +195,14 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
         '500':
-          description: Erro Interno do Servidor (Internal Server Error)  
+          description: Erro Interno do Servidor (Internal Server Error)
           schema:
             $ref: "#/definitions/ErrorResponse"
 
-  # ---
-  # Serviço responsável por filtrar todas as notas dos alunos com base na media geral.
-  # ---  
-  /aluno/media:
-    x-swagger-router-controller: aluno
-    get:
-      tags:
-        - Aluno
-        - Nota
-      operationId: listar_alunos_acima_media
-      responses:
-        '200':
-          description: Sucesso (OK)
-          schema:
-            $ref: "#/definitions/AlunosResponse"
-        '400':
-          description: Requisição Inválida (Bad Request)
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-        '500':
-          description: Erro Interno do Servidor (Internal Server Error)  
-          schema:
-            $ref: "#/definitions/ErrorResponse" 
-
-
-  # ---
-  # Serviço responsável por cadastrar um novo endereco.
-  # ---  
   /endereco:
     x-swagger-router-controller: endereco
     post:
+      summary: Cadastrar um novo endereço.
       tags:
         - Endereço
       operationId: cadastrar_endereco
@@ -227,7 +212,7 @@ paths:
           description: Modelo de Endereço
           required: true
           schema:
-            $ref: "#/definitions/Endereco"        
+            $ref: "#/definitions/Endereco"
       responses:
         '201':
           description: Criado (Created)
@@ -236,10 +221,11 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
         '500':
-          description: Erro Interno do Servidor (Internal Server Error)  
+          description: Erro Interno do Servidor (Internal Server Error)
           schema:
             $ref: "#/definitions/ErrorResponse"
     get:
+      summary: Listar todos os endereços.
       tags:
         - Endereço
       operationId: listar_enderecos
@@ -253,14 +239,14 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
         '500':
-          description: Erro Interno do Servidor (Internal Server Error)  
+          description: Erro Interno do Servidor (Internal Server Error)
           schema:
             $ref: "#/definitions/ErrorResponse"
 
 
   /docs:
     x-swagger-pipe: swagger_raw
-    
+
 definitions:
   Aluno:
     type: object
@@ -269,7 +255,7 @@ definitions:
         type: string
       data_nascimento:
         type: string
-        #format: date
+        format: date
       cpf:
         type: string
       nota:
@@ -280,6 +266,19 @@ definitions:
       - cpf
       - nota
 
+  AlunoPut:
+    type: object
+    properties:
+      nome:
+        type: string
+      data_nascimento:
+        type: string
+        format: date
+      cpf:
+        type: string
+      nota:
+        type: number
+
   AlunoResponse:
     type: object
     properties:
@@ -287,7 +286,7 @@ definitions:
         type: string
       data_nascimento:
         type: string
-        #format: date
+        format: date
       cpf:
         type: string
       nota:
@@ -307,7 +306,7 @@ definitions:
           type: string
         data_nascimento:
           type: string
-          #format: date
+          format: date
         cpf:
           type: string
         nota:
@@ -317,7 +316,7 @@ definitions:
         - data_nascimento
         - cpf
         - nota
-      
+
   Endereco:
     type: object
     properties:
@@ -343,7 +342,7 @@ definitions:
     required:
       - endereco
       - bairro
-      
+
   EnderecosResponse:
     required:
       - total
@@ -363,7 +362,7 @@ definitions:
           required:
             - endereco
             - bairro
-        
+
   GeneralResponse:
     type: object
     properties:
@@ -372,11 +371,11 @@ definitions:
         description: returns 1 if successful
       description:
         type: string
-        description: a short comment 
+        description: a short comment
     required:
       - success
       - description
-      
+
   ErrorResponse:
     required:
       - message
