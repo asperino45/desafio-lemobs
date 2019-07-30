@@ -99,10 +99,16 @@ async function listarNotasAlunos(req, res) {
 }
 
 async function listarAlunosAcimaMedia(req, res) {
-    // const sum = Aluno.sum('nota');
-    // const count = Aluno.count();
-    // const mean = sum * 1.0 / count
-    return Aluno.findAll()
+    const sum = await Aluno.sum('nota');
+    const count = await Aluno.count();
+    const mean = sum * 1.0 / count
+    return Aluno.findAll({
+        where: {
+            nota: {
+                [Op.gte]: mean
+            }
+        }
+    })
         .then((alunos) => res.status(200).send(alunos))
         .catch((error) => res.status(400).send(error));
 };
