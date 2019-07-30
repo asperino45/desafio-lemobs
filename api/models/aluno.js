@@ -6,29 +6,36 @@ module.exports = (sequelize, DataTypes) => {
     cpf: {
       type: DataTypes.STRING,
       unique: true,
-      validate: { isCPF }
+      validate: { isCPF },
+      get() {
+        const regex = /(\d{3})(\d{3})(\d{3})(\d{2})/g;
+        return this.getDataValue('cpf').replace(regex, "$1.$2.$3-$4");
+      },
+      set(cpf) {
+        return this.setDataValue('cpf', cpf.replace(/[\.-]/g, ""))
+      }
     },
     nota: DataTypes.FLOAT
   }, {
-      getterMethods: {
-        pontuar_cpf() {
-          const regex = /(\d{3})(\d{3})(\d{3})(\d{2})/g;
-          return this.getDataValue('cpf').replace(regex, "$1.$2.$3-$4");
-        },
-        aluno_formatado() {
-          return {
-            nome: this.getDataValue('nome'),
-            data_nascimento: this.getDataValue('data_nascimento'),
-            cpf: this.getDataValue('cpf'),
-            nota: this.getDataValue('nota'),
-          }
-        }
-      },
-      setterMethods: {
-        despontuar_cpf(cpf) {
-          return this.setDataValue('cpf', cpf.replace(/[\.-]/g, ""))
-        }
-      }
+      // getterMethods: {
+      //   pontuar_cpf() {
+      //     const regex = /(\d{3})(\d{3})(\d{3})(\d{2})/g;
+      //     return this.getDataValue('cpf').replace(regex, "$1.$2.$3-$4");
+      //   },
+      //   aluno_formatado() {
+      //     return {
+      //       nome: this.getDataValue('nome'),
+      //       data_nascimento: this.getDataValue('data_nascimento'),
+      //       cpf: this.getDataValue('cpf'),
+      //       nota: this.getDataValue('nota'),
+      //     }
+      //   }
+      // },
+      // setterMethods: {
+      //   despontuar_cpf(cpf) {
+      //     return this.setDataValue('cpf', cpf.replace(/[\.-]/g, ""))
+      //   }
+      // }
     });
   Aluno.associate = function (models) {
     // associations can be defined here

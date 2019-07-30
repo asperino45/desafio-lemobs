@@ -23,16 +23,7 @@ async function listarAlunos(req, res) {
                     message: 'Nenhum aluno encontrado',
                 });
             }
-            return res.status(200).send(alunos
-                .map((aluno) => {
-                    return {
-                        nome: aluno.nome,
-                        data_nascimento: aluno.data_nascimento,
-                        cpf: aluno.pontuar_cpf,
-                        nota: aluno.nota
-                    }
-                }
-                ));
+            return res.status(200).send(alunos)
         })
         .catch((error) => res.status(400).send(error))
 }
