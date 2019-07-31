@@ -229,6 +229,11 @@ paths:
       tags:
         - Endereço
       operationId: listar_enderecos
+      parameters:
+        - in: query
+          name: bairro
+          description: Bairro para filtrar Endereço
+          type: string
       responses:
         '200':
           description: Sucesso (OK)
@@ -328,9 +333,12 @@ definitions:
         type: string
       bairro:
         type: string
+      aluno_id:
+        type: integer
     required:
       - rua
       - bairro
+      - aluno_id
 
   EnderecoResponse:
     type: object
